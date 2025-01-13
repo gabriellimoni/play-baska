@@ -2,6 +2,9 @@
 
 import { addFouls, addPoints, Game, Team as TeamType } from "@/services/game";
 
+const firstFoulPenaltyCount = 7;
+const lastFoulPenaltyCount = 10;
+
 export default function Team(props: {
   bgColor?: string;
   game: Game;
@@ -25,11 +28,7 @@ export default function Team(props: {
   };
 
   return (
-    <div
-      className={`flex-1 flex items-center justify-center ${
-        props.bgColor || ""
-      }`}
-    >
+    <div className={`flex-1 flex flex-col items-center ${props.bgColor || ""}`}>
       <div>
         <h1 className="text-white text-2xl font-bold">{name}</h1>
         <h2 className="text-white text-1xl font-bold">Pontuação: {points}</h2>
@@ -76,6 +75,40 @@ export default function Team(props: {
           </button>
         </div>
       </div>
+
+      {fouls >= firstFoulPenaltyCount && fouls < lastFoulPenaltyCount && (
+        <>
+          <div
+            className="text-xs bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-3 mb-3"
+            role="alert"
+          >
+            <span className="block sm:inline">
+              <b>Esse time já tem {firstFoulPenaltyCount} faltas!</b>
+              <br />A partir dessa falta a penalização será de 2 lances livres.
+              <br />
+              Independentemente se acertar ou não, se o chute for de 1 ou de 2.
+            </span>
+          </div>
+        </>
+      )}
+
+      {fouls >= lastFoulPenaltyCount && (
+        <>
+          <div
+            className="text-xs bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-3 mb-3"
+            role="alert"
+          >
+            <span className="block sm:inline">
+              <b>Esse time já tem {lastFoulPenaltyCount} faltas!</b>
+              <br />
+              A partir dessa falta a penalidade será de 2 lances livres e posse
+              de bola para o time que sofreu a falta.
+              <br />
+              Independentemente se acertar ou não, se o chute for de 1 ou de 2.
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
