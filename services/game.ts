@@ -70,3 +70,30 @@ export const addFouls = async (data: {
     } as Game);
   }
 };
+
+export const createGame = async (data: {
+  name: string;
+  t1Name: string;
+  t2Name: string;
+}): Promise<string> => {
+  const { name, t1Name, t2Name } = data;
+  const gameId = name.toLowerCase().replaceAll(" ", "-");
+
+  await editOnFirebase("games", gameId, {
+    name,
+    teamOne: {
+      fouls: 0,
+      id: t1Name.toLowerCase().replaceAll(" ", "-"),
+      name: t1Name,
+      points: 0,
+    },
+    teamTwo: {
+      fouls: 0,
+      id: t2Name.toLowerCase().replaceAll(" ", "-"),
+      name: t2Name,
+      points: 0,
+    },
+  } as Game);
+
+  return gameId;
+};

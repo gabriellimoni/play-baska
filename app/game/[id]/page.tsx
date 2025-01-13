@@ -21,7 +21,7 @@ export default function GamePage({
     });
 
     return () => {
-      unsub();
+      unsub && unsub();
     };
   }, []);
 
