@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCgRxcw-AY7fqIdjGwwVLw-kzH9HnRCUjY",
@@ -15,7 +15,13 @@ export const firestore = getFirestore(firebaseApp);
 
 export const subscribe = (col: string, id: string, cb: Function) => {
   return onSnapshot(doc(firestore, col, id), (doc) => {
-    console.log("Current data: ", doc.data());
-    cb(doc.data());
+    cb({
+      id,
+      ...doc.data(),
+    });
   });
+};
+
+export const edit = async (col: string, id: string, data: any) => {
+  await setDoc(doc(firestore, col, id), data);
 };

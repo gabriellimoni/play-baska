@@ -1,24 +1,24 @@
 "use client";
 
-import { addFouls, addPoints, Team as TeamType } from "@/services/game";
+import { addFouls, addPoints, Game, Team as TeamType } from "@/services/game";
 
 export default function Team(props: {
   bgColor?: string;
-  gameId: string;
+  game: Game;
   team: TeamType;
 }) {
   const { id: teamId, name, points, fouls } = props.team;
 
   const handleAddPoint = async (qty: number) => {
     addPoints({
-      gameId: props.gameId,
+      game: props.game,
       qty,
       teamId,
     });
   };
   const handleAddFoul = async (qty: number) => {
     addFouls({
-      gameId: props.gameId,
+      game: props.game,
       qty,
       teamId,
     });

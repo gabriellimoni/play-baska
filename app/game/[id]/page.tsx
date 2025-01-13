@@ -2,7 +2,7 @@
 
 import Team from "@/components/team";
 import { subscribe } from "@/config/firebase";
-import { Game, getGame } from "@/services/game";
+import { Game } from "@/services/game";
 import { useEffect, useState } from "react";
 
 export default function GamePage({
@@ -38,8 +38,8 @@ export default function GamePage({
       </div>
 
       <div className="bg-gray-100 flex flex-row p-2">
-        <Team bgColor="bg-green-500" team={teamOne} gameId={game.id} />
-        <Team bgColor="bg-blue-500" team={teamTwo} gameId={game.id} />
+        <Team bgColor="bg-green-500" team={teamOne} game={game} />
+        <Team bgColor="bg-blue-500" team={teamTwo} game={game} />
       </div>
     </div>
   );

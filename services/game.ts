@@ -1,3 +1,5 @@
+import { edit as editOnFirebase } from "@/config/firebase";
+
 export interface Game {
   id: string;
   name: string;
@@ -13,61 +15,58 @@ export interface Team {
   bgColor?: string;
 }
 
-const memoryGames: Game[] = [
-  {
-    id: "1",
-    name: "Any game name",
-    teamOne: {
-      id: "t1",
-      fouls: 1,
-      name: "DC Baska",
-      points: 10,
-    },
-    teamTwo: {
-      id: "t2",
-      fouls: 2,
-      name: "DC Baska 2",
-      points: 12,
-    },
-  },
-];
-
-export const getGame = async (id: string): Promise<Game> => {
-  return memoryGames[0];
-};
-
 export const addPoints = async (data: {
-  gameId: string;
+  game: Game;
   teamId: string;
   qty: number;
 }) => {
-  const t1 = memoryGames[0].teamOne;
-  const t2 = memoryGames[0].teamTwo;
+  const { game, teamId, qty } = data;
+  const t1 = game.teamOne;
+  const t2 = game.teamTwo;
 
-  if (t1.id === data.teamId) {
-    t1.points += data.qty;
+  if (t1.id === teamId) {
+    editOnFirebase("games", game.id, {
+      ...game,
+      teamOne: {
+        ...t1,
+        points: (t1.points += qty),
+      },
+    } as Game);
   } else {
-    t2.points += data.qty;
+    editOnFirebase("games", game.id, {
+      ...game,
+      teamTwo: {
+        ...t2,
+        points: (t2.points += qty),
+      },
+    } as Game);
   }
-
-  console.log(memoryGames[0].teamOne);
-  console.log(memoryGames[0].teamTwo);
 };
 
 export const addFouls = async (data: {
-  gameId: string;
+  game: Game;
   teamId: string;
   qty: number;
 }) => {
-  const t1 = memoryGames[0].teamOne;
-  const t2 = memoryGames[0].teamTwo;
+  const { game, teamId, qty } = data;
+  const t1 = game.teamOne;
+  const t2 = game.teamTwo;
 
   if (t1.id === data.teamId) {
-    t1.fouls += data.qty;
+    editOnFirebase("games", game.id, {
+      ...game,
+      teamOne: {
+        ...t1,
+        fouls: (t1.fouls += qty),
+      },
+    } as Game);
   } else {
-    t2.fouls += data.qty;
+    editOnFirebase("games", game.id, {
+      ...game,
+      teamTwo: {
+        ...t2,
+        fouls: (t2.fouls += qty),
+      },
+    } as Game);
   }
-
-  console.log(memoryGames[0].teamOne);
-  console.log(memoryGames[0].teamTwo);
 };
