@@ -1,6 +1,7 @@
 "use client";
 
 import Team from "@/components/team";
+import { subscribe } from "@/config/firebase";
 import { Game, getGame } from "@/services/game";
 import { useEffect, useState } from "react";
 
@@ -12,10 +13,17 @@ export default function GamePage({
   const [game, setGame] = useState<Game>();
 
   useEffect(() => {
+    let unsub: Function;
     params.then(({ id }) => {
-      getGame(id).then(setGame);
+      unsub = subscribe("games", id, (data: any) => {
+        setGame(data);
+      });
     });
-  }, [setGame]);
+
+    return () => {
+      unsub();
+    };
+  }, []);
 
   if (!game) return <></>;
 
