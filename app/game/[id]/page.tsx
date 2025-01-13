@@ -1,5 +1,6 @@
 "use client";
 
+import Clock from "@/components/clock";
 import Team from "@/components/team";
 import { subscribe } from "@/config/firebase";
 import { Game } from "@/services/game";
@@ -36,6 +37,8 @@ export default function GamePage({
           {name}
         </h1>
       </div>
+
+      <Clock gameId={game.id} />
 
       <div className="bg-gray-100 flex flex-row p-2">
         <Team bgColor="bg-green-500" team={teamOne} game={game} />
